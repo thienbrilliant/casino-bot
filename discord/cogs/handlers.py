@@ -10,11 +10,11 @@ class Handlers(commands.Cog, name='handlers'):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print(self.client.user.name + " is ready")
+        print(self.client.user.name + " đã sẵn sàng")
         try:
             await self.client.change_presence(
                 activity=discord.Game(f"blackjack | {PREFIX}help")
-                )
+            )
         except:
             pass
 
@@ -34,15 +34,19 @@ class Handlers(commands.Cog, name='handlers'):
             await ctx.invoke(self.client.get_command('help'), ctx.command.name)
 
         elif isinstance(error, (UserNotFound, MemberNotFound)):
-            await ctx.send(f"Member, `{error.argument}`, was not found.")
+            await ctx.send(f"Không tìm thấy thành viên `{error.argument}`.")
 
         elif isinstance(error, MissingPermissions):
-            await ctx.send("Must have following permission(s): " + 
-            ", ".join([f'`{perm}`' for perm in error.missing_perms]))
+            await ctx.send(
+                "Bạn cần có các quyền sau: " +
+                ", ".join([f'`{perm}`' for perm in error.missing_perms])
+            )
 
         elif isinstance(error, BotMissingPermissions):
-            await ctx.send("I must have following permission(s): " +
-            ", ".join([f'`{perm}`' for perm in error.missing_perms]))
+            await ctx.send(
+                "Bot cần có các quyền sau: " +
+                ", ".join([f'`{perm}`' for perm in error.missing_perms])
+            )
 
         elif isinstance(error, InsufficientFundsException):
             await ctx.invoke(self.client.get_command('money'))
@@ -54,10 +58,11 @@ class Handlers(commands.Cog, name='handlers'):
             s %= 3600
             m = s // 60
             s %= 60
-            await ctx.send(f'{h}hrs {m}min {s}sec remaining.')
+            await ctx.send(f'Còn {h} giờ {m} phút {s} giây nữa.')
         
         else:
             raise error
+
 
 def setup(client: commands.Bot):
     client.add_cog(Handlers(client))
