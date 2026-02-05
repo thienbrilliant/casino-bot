@@ -10,16 +10,16 @@ class Help(commands.Cog, name='help'):
         self.client = client
 
     @commands.command(
-        brief="Lists commands and gives info.",
-        usage="help *command",
+        brief="Liệt kê các lệnh và hiển thị thông tin.",
+        usage="help *lệnh",
         hidden=True
     )
     async def help(self, ctx, request=None):
         if not request:
-            embed = make_embed(title="Commands")
+            embed = make_embed(title="Danh sách lệnh")
             commands_list = [
                 (
-                    name, [command for command in cog.get_commands()\
+                    name, [command for command in cog.get_commands()
                         if not command.hidden]
                 ) for name, cog in self.client.cogs.items()
             ]
@@ -42,11 +42,13 @@ class Help(commands.Cog, name='help'):
                 await ctx.invoke(self.client.get_command('help'))
                 return
             embed = make_embed(
-                title=com.name, description=com.brief, footer="* optional"
-            )                       
+                title=com.name,
+                description=com.brief,
+                footer="* không bắt buộc"
+            )
             embed.add_field(
-                name='Usage:',
-                value='`'+self.client.command_prefix+com.usage+'`'
+                name='Cách dùng:',
+                value='`' + self.client.command_prefix + com.usage + '`'
             )
             file = None
         await ctx.send(file=file, embed=embed)
